@@ -1,0 +1,65 @@
+<div>
+
+    <br>
+    <h1 class="subheader">Filtrar asignaturas </h1>
+    <div class="row">
+        <div class="large-12 columns">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Cuatrimestre
+                    </th>
+
+                </tr>
+                <tr>
+                    <th><label>Filtra tu búsqueda: </label>
+                    </th>
+                    <th>
+                        <input type="text" ng-model="buscadornombre" />
+                    </th>
+                    <th>
+
+                        <select ng-model="cuatrimestre">
+                            <option value="Tardor" selected>Tardor</option>
+                            <option value="Primavera">Primavera</option>
+                            <option value="">Todas</option>
+                        </select>
+                    </th>
+
+                </tr>
+                </thead>
+            </table>
+
+        </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nombre <a class="glyphicon glyphicon-chevron-down"></a></th>
+            <th>Cuatrimestre</th>
+            <th>Número de alumnos</th>
+            <th>Más...</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="subject in subjects|filter:buscadornombre|filter:cuatrimestre">
+            <td>{{subject.name}}</td>
+            <td>{{subject.when}}</td>
+            <td>{{subject.students.length}}</td>
+            <td>
+                <a class="glyphicon glyphicon-plus" href="#/subjects/{{subject._id}}"></a>
+            </td>
+            <td>
+                <button class="btn btn-danger" ng-click="DeleteSubject(subject._id)">Delete Subject</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</div>

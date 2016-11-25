@@ -1,0 +1,63 @@
+<div ng-controller="SubjectsCtrl">
+
+    <br>
+    <h1>Subjects</h1>
+    <br>
+    <h2>Create new subject</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Cuatrimestre</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>
+            <input class="form-control" ng-model="NewSubject.name">
+        </td>
+        <td>
+            <input class="form-control" ng-model="NewSubject.when">
+        </td>
+        <td>
+            <button class="btn btn-primary" ng-click="CreateSubject()">Create subject</button>
+        </td>
+        </tbody>
+    </table>
+
+    <h2>List of subjects</h2>
+        <h3> Ordenar por:</h3>
+        <select ng-model="orden">
+            <option value="name">Alfabetico</option>
+            <option value="-name">Alfabético inverso</option>
+            <option value="students.length">Número alumnos ascendente</option>
+            <option value="-students.length">Número alumnos descendente</option>
+        </select>
+
+
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nombre <a class="glyphicon-"></a></th>
+            <th>Cuatrimestre</th>
+            <th>Número de alumnos</th>
+            <th>Más...</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="subject in subjects | orderBy: orden">
+            <td>{{subject.name}}</td>
+            <td>{{subject.when}}</td>
+            <td>{{subject.students.length}}</td>
+            <td>
+                <a class="glyphicon glyphicon-plus" href="#/subjects/{{subject._id}}"></a>
+            </td>
+            <td>
+                <button class="btn btn-danger" ng-click="DeleteSubject(subject._id)">Delete Subject</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

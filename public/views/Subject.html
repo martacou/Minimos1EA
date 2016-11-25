@@ -1,0 +1,34 @@
+<div ng-controller="SubjectCtrl">
+
+    <br>
+    <h1>{{subject.name}}</h1>
+    <h2>Cuatrimestre: {{subject.when}}</h2>
+    <h3>Students in the subject</h3>
+    <table class="table">
+        <thead>
+        <tr>
+        </tr>
+        </thead>
+        <tbody>
+        </tr>
+        <tr ng-repeat="student in subject.students">
+            <td>{{student.name}}</td>
+            <td><a class="glyphicon glyphicon-plus" href="#/students/{{student._id}}"></a></td>
+            <td><a class="btn btn-danger" ng-click="DeleteStudentSubject(student._id)">Quitar</a></td>
+        </tr>
+        </tbody>
+    </table>
+    </tbody>
+    </table>
+
+    <h3>Añadir estudiantes</h3>
+    <table class="table">
+        <tr ng-repeat="student in students">
+            <td>{{student.name}}</td>
+            <td><a class="btn btn-success" ng-click="AddStudentInSubject(student._id)">Añadir</a></td>
+        </tr>
+
+    </table>
+    </tbody>
+    </table>
+</div>
