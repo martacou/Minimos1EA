@@ -21,4 +21,13 @@ angular.module('myApp').controller('SearchCtrl',['$scope','$http','$routeParams'
                 console.log('Error: ' + data);
             });
     };
+    $scope.DeleteSubject = function (id) {
+        $http.delete('/subjects/' + id)
+            .success(function(data){
+                $scope.subjects = data;
+            })
+            .error(function(data){
+                console.log('Error:' + data);
+            });
+    };
 }]);

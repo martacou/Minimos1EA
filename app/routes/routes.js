@@ -17,7 +17,6 @@ module.exports = function (app) {
             if (err) res.send(500, err.message);
             Student.populate(subjs,{path: "students"},function(err,subjs){
                 console.log('GET all subjects');
-                console.log(subjs);
                 res.status(200).json(subjs);
             });
 
@@ -41,30 +40,30 @@ module.exports = function (app) {
     }
     //GET - Get only a user
 
-
     addUser = function (req, res) {
-        console.log(req.body.phones);
-        console.log(" addUser");
+        console.log("addStudent");
         var student = new Student({
-
             name: req.body.name,
             address: req.body.address,
-            phones: [{name:req.body.phonename, number:req.body.phonenum}],
+            phones: {
+                contact: req.body.contact,
+                number: req.body.number
+            }
         });
+        console.log(req.body.contact, req.body.number);
 
-        student.save(function (err, student) {
-            if (err) return res.send(500, err.message);
-            res.status(200).json(student);
-
+        student.save(function (err, subj) {
+            if(err) return console.log("Imposible crear");
+            res.status(200).json(subj);
         });
     };
+
 
     getAllUsers = function (req, res) {
         console.log("getAllUsers ");
         Student.find(function (err, users) {
             if (err) res.send(500, err.message);
             console.log('GET /students');
-            console.log(users);
             res.status(200).json(users);
         });
     };
@@ -74,7 +73,7 @@ module.exports = function (app) {
     getUser = function(req, res){
         console.log(" getUser");
         var id = req.params.user_id;
-        Student.findById(id, function(err, student){
+        Student.findById(id).populate('subjects').exec().then(function(err, student){
             if(err)
                 res.send(err)
             res.send(student);
@@ -104,15 +103,25 @@ module.exports = function (app) {
                 res.send(err);
             }
             if(subject){
-                Subject.findById(subject._id).populate('students').exec().then(function(err, subject){
-                    if(err)
+                var query = {_id: req.body.student_id};
+                var update = {$addToSet : {"subjects" : req.params.subject_id }};
+                var options = {};
+                Student.findOneAndUpdate(query, update, options, function(err, student) {
+                    if (err) {
                         res.send(err);
-                    res.send(subject);
+                    }
+                    if(student){
+                        Subject.findById(subject._id).populate('students').exec().then(function(err, subject) {
+                            if (err)
+                                res.send(err)
+                            res.send(subject);
+                        });
+                    }
                 });
             }
         });
-
     };
+
 
     deleteSubject = function(req, res) {
         console.log("deleteSubject");
@@ -161,12 +170,16 @@ module.exports = function (app) {
         });
     };
 
+
     addPhone = function(req, res){
+        console.log("Añadir telefono");
         var query = {_id: req.params.student_id};
-        var update = {$addToSet : {"phones" :{name: req.body.phonename, number: req.body.phonenum}}};
+        var update = {$addToSet : {"phones" :{contact: req.body.contact, number: req.body.number}}};
         var options = {};
         Student.findOneAndUpdate(query, update, options, function(err, student) {
+            console.log("findandupdate");
             if (err) {
+                console.log("Error: ", err);
                 res.send(err);
             }
             if(student){
@@ -174,12 +187,12 @@ module.exports = function (app) {
                     if (err)
                         res.send(err)
                     res.send(student);
+                    console.log("Telefono añadido");
                 });
             }
     })};
 
     deletePhone = function(req, res){
-
         console.log("delete phone!!!!!! ");
         var query = {_id: req.params.student_id};
         var update = {$pull : {"phones":{ _id: req.params.phone_id}}};

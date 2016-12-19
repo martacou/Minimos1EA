@@ -11,7 +11,6 @@ angular.module('myApp').controller('StudentsCtrl',['$scope','$http','$routeParam
             $scope.students = response;
 
         });
-
     };
     // get all students
     $http.get('/students')
@@ -28,6 +27,8 @@ angular.module('myApp').controller('StudentsCtrl',['$scope','$http','$routeParam
             .success(function(data){
                 $scope.newstudent = {}; //clear the form
                 $scope.students = data;
+                console.log(data);
+                console.log("createstudent");
                 refresh();
             })
             .error(function(data){

@@ -30,6 +30,8 @@ angular.module('myApp').controller('StudentCtrl',['$scope','$http','$routeParams
     };
 
     $scope.AddPhone = function () {
+        console.log("AddPhone");
+        console.log($scope.Phone);
         $http.post('/students/addphone/' + StudentID, $scope.Phone)
             .success(function(data){
                 $scope.Phone ={};
